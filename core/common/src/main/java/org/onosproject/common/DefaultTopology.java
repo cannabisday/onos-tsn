@@ -687,6 +687,7 @@ public class DefaultTopology extends AbstractModel implements Topology {
     private void addClusterBroadcastSet(TopologyCluster cluster,
                                         Builder<ClusterId, ConnectPoint> builder) {
         // Use the graph root search results to build the broadcast set.
+        log.info("joo) DIJKSTRA DIJKSTRA DIJKSTRA DIJKSTRA DIJKSTRA seerch start");
         Result<TopologyVertex, TopologyEdge> result =
                 DIJKSTRA.search(graph, cluster.root(), null, hopCountWeigher, 1);
         for (Map.Entry<TopologyVertex, Set<TopologyEdge>> entry :
@@ -774,9 +775,21 @@ public class DefaultTopology extends AbstractModel implements Topology {
             implements LinkWeigher {
         @Override
         public Weight weight(TopologyEdge edge) {
+            if (edge.link().src().toString() == "of:00003e7511111f42") {
+
             return (edge.link().state() == INACTIVE) ||
                     (edge.link().type() == INDIRECT) ?
-                    getNonViableWeight() : new ScalarWeight(HOP_WEIGHT_VALUE);
+
+                getNonViableWeight() : new ScalarWeight(HOP_WEIGHT_VALUE*3);
+            }
+            else {
+            return (edge.link().state() == INACTIVE) ||
+                    (edge.link().type() == INDIRECT) ?
+
+                getNonViableWeight() : new ScalarWeight(HOP_WEIGHT_VALUE);
+
+
+            }    
         }
     }
 

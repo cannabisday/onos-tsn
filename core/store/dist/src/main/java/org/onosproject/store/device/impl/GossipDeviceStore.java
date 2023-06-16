@@ -15,6 +15,8 @@
  */
 package org.onosproject.store.device.impl;
 
+import org.onosproject.net.topology.HopCountLinkWeigher;
+
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -22,6 +24,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang3.RandomUtils;
 import org.onlab.packet.ChassisId;
 import org.onlab.util.KryoNamespace;
+import org.onosproject.net.ConnectPoint;
 import org.onosproject.cluster.ClusterService;
 import org.onosproject.cluster.ControllerNode;
 import org.onosproject.cluster.NodeId;
@@ -123,6 +126,7 @@ public class GossipDeviceStore
         implements DeviceStore {
 
     private final Logger log = getLogger(getClass());
+
 
     private static final String DEVICE_NOT_FOUND = "Device with ID %s not found";
     // Timeout in milliseconds to process device or ports on remote master node
@@ -703,6 +707,7 @@ public class GossipDeviceStore
     private DeviceEvent createPort(Device device, Port newPort,
                                    Map<PortNumber, Port> ports) {
         ports.put(newPort.number(), newPort);
+
         return new DeviceEvent(PORT_ADDED, device, newPort);
     }
 
@@ -712,6 +717,11 @@ public class GossipDeviceStore
     private DeviceEvent updatePort(Device device, Port oldPort,
                                    Port newPort,
                                    Map<PortNumber, Port> ports) {
+
+        //log.info("joo) using GossipDeviceStore updateport, portno {} and portspeed {} ", newPort.number(), newPort.portSpeed());
+        HopCountLinkWeigher.SpeedCountLinkWeigher((device.id().toString()).concat("/").concat(newPort.number().toString()), newPort.portSpeed());
+        log.info("joo) SpeedCountLinkWeigher portnumber {} and portspeed {}", (device.id().toString()).concat("/").concat(newPort.number().toString()), newPort.portSpeed());
+        //ConnectPoint(ElementId elementId, PortNumber portNumber)
 
         if (oldPort.isEnabled() != newPort.isEnabled() ||
                 oldPort.type() != newPort.type() ||

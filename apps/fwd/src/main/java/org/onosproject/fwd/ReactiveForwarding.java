@@ -41,6 +41,7 @@ import org.onosproject.net.HostId;
 import org.onosproject.net.Link;
 import org.onosproject.net.Path;
 import org.onosproject.net.PortNumber;
+import org.onosproject.net.device.PortDescription; /*joo*/ 
 import org.onosproject.net.flow.DefaultTrafficSelector;
 import org.onosproject.net.flow.DefaultTrafficTreatment;
 import org.onosproject.net.flow.FlowEntry;

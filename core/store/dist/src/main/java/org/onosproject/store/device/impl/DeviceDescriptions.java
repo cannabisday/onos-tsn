@@ -30,6 +30,7 @@ import org.onosproject.net.device.DeviceDescription;
 import org.onosproject.net.device.PortDescription;
 import org.onosproject.store.Timestamp;
 import org.onosproject.store.impl.Timestamped;
+// import org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider;
 
 /*
  * Collection of Description of a Device and Ports, given from a Provider.

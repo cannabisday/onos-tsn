@@ -155,6 +155,10 @@ public class OpenFlowDeviceProvider extends AbstractProvider implements DevicePr
 
     private static final Logger LOG = getLogger(OpenFlowDeviceProvider.class);
 
+    //joo) public static final HashMap<PortNumber, Long> portnumbertospeedmap = new HashMap<PortNumber, Long>();
+
+
+
     // TODO Some duplicate with one defined in OpticalAnnotations
     // slice out optical specific handling and consolidate.
     /**
@@ -817,6 +821,10 @@ public class OpenFlowDeviceProvider extends AbstractProvider implements DevicePr
                                                  cId, annotations);
             providerService.deviceConnected(did, description);
             providerService.updatePorts(did, buildPortDescriptions(sw));
+
+            
+            //LOG.error("Joo) OpenFlowdevpro did and : {}", did); //joo
+
             //sends port description stats request again if OF version supports
             if (sw.features().getVersion().compareTo(OFVersion.OF_13) >= 0) {
                 sendPortDescStatsRequest(sw);
@@ -1196,6 +1204,7 @@ public class OpenFlowDeviceProvider extends AbstractProvider implements DevicePr
             if (ether.isPresent()) {
                 // ethernet port
                 // TODO parse other part of OFPortDescPropEthernet if necessary
+                //LOG.warn("joo) port speed important port speed is important port speed is important port speed is important port speed is important {}", portSpeed(port));
                 return DefaultPortDescription.builder()
                         .withPortNumber(portNo)
                         .isEnabled(enabled)
@@ -1204,6 +1213,10 @@ public class OpenFlowDeviceProvider extends AbstractProvider implements DevicePr
                         .annotations(annotations.build())
                         .build();
             }
+            LOG.warn("joo) Openflowdeviceprovier weigher linking portno {} , portspeed {}", portNo, portSpeed(port));
+            //portnumbertospeedmap.put(portNo, portSpeed(port));
+
+            //LOG.warn("joo) port number is : {}", portNo);
 
             Optional<OFPortDescPropOptical> optical = port.getProperties().stream()
                     .filter(OFPortDescPropOptical.class::isInstance)

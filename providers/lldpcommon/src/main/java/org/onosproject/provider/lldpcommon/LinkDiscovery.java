@@ -209,7 +209,7 @@ public class LinkDiscovery implements TimerTask {
 
                 /* Verify MAC in LLDP packets */
                 if (!ONOSLLDP.verify(onoslldp, context.lldpSecret(), context.maxDiscoveryDelay())) {
-                    log.warn("LLDP Packet failed to validate!");
+                    //log.warn("LLDP Packet failed to validate!");
                     return true;
                 }
             }
@@ -218,6 +218,8 @@ public class LinkDiscovery implements TimerTask {
             PortNumber dstPort = packetContext.inPacket().receivedFrom().port();
 
             String idString = onoslldp.getDeviceString();
+            //log.info("lldpdiscovery class] PortNumber srcPort = {}, srcDeviceid = {}",srcPort,DeviceId.deviceId(idString));
+
             if (!isNullOrEmpty(idString)) {
                 try {
                     DeviceId srcDeviceId = DeviceId.deviceId(idString);
@@ -249,6 +251,7 @@ public class LinkDiscovery implements TimerTask {
             MacAddress srcChassisId = onoslldp.getChassisIdByMac();
             String srcPortName = onoslldp.getPortNameString();
             String srcPortDesc = onoslldp.getPortDescString();
+            log.info("Joo src Port desc is {}, onoslldp.getPortDescString()");
 
             log.debug("srcChassisId:{}, srcPortName:{}, srcPortDesc:{}", srcChassisId, srcPortName, srcPortDesc);
 

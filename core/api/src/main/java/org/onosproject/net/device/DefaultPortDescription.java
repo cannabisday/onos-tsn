@@ -23,6 +23,8 @@ import org.onosproject.net.SparseAnnotations;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.onosproject.net.Port.Type;
 import com.google.common.base.Objects;
+import org.slf4j.Logger;
+
 
 /**
  * Default implementation of immutable port description.
@@ -56,7 +58,16 @@ public class DefaultPortDescription extends AbstractDescription
         this.isEnabled = isEnabled;
         this.isRemoved = isRemoved;
         this.type = type;
-        this.portSpeed = portSpeed;
+        if (number.toString() == "1"){
+
+            this.portSpeed = portSpeed;
+        }
+        else {
+            this.portSpeed = portSpeed; //joo) this.number.toLong(); //10;
+            //log.warn("Joo) Defualtport desc - number.toString() : {}", number.toString());
+            //log.warn("Joo) Defualtport desc - number : {}", this.number);
+        }
+        //joo) orig this.portSpeed = portSpeed;
     }
 
     // Default constructor for serialization

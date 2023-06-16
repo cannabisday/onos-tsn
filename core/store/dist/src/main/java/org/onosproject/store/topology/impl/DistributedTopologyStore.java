@@ -58,6 +58,9 @@ import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
+
+
 
 import java.util.Collections;
 import java.util.Dictionary;
@@ -97,6 +100,8 @@ public class DistributedTopologyStore
         implements TopologyStore, PathAdminService {
 
     private final Logger log = getLogger(getClass());
+    //private static final Logger LOG = getLogger(OpenFlowDeviceProvider.class);
+
 
     private static final String FORMAT = "Settings: linkWeightFunction={}";
 
@@ -125,6 +130,7 @@ public class DistributedTopologyStore
     private static final String LINK_METRIC = "linkMetric";
     private static final String GEO_DISTANCE = "geoDistance";
 
+
     /** Default link-weight function: hopCount, linkMetric, geoDistance. */
     private String linkWeightFunction = LINK_WEIGHT_FUNCTION_DEFAULT;
 
@@ -149,7 +155,7 @@ public class DistributedTopologyStore
                 .withTimestampProvider((k, v) -> clockService.getTimestamp())
                 .build();
         broadcastPoints.addListener(listener);
-        log.info("Started");
+        log.info("Started Started Started Started Started Started Started Started Started Started Started Started Started Started Started ");
     }
 
     @Deactivate
@@ -174,6 +180,8 @@ public class DistributedTopologyStore
                             new GeoDistanceLinkWeight(deviceService) : null;
             setDefaultLinkWeigher(weight);
         }
+        log.info("joo) edge link annotatoin vlaue of metric {}",linkWeightFunction);
+
         log.info(FORMAT, linkWeightFunction);
     }
 
@@ -190,6 +198,7 @@ public class DistributedTopologyStore
 
     @Override
     public TopologyGraph getGraph(Topology topology) {
+        log.info("getgraph");
         return defaultTopology(topology).getGraph();
     }
 
@@ -215,6 +224,7 @@ public class DistributedTopologyStore
 
     @Override
     public Set<Path> getPaths(Topology topology, DeviceId src, DeviceId dst) {
+        log.info("getpaths1");
         return defaultTopology(topology).getPaths(src, dst);
     }
 
@@ -222,6 +232,7 @@ public class DistributedTopologyStore
     @Override
     public Set<Path> getPaths(Topology topology, DeviceId src,
                               DeviceId dst, LinkWeigher weigher) {
+        log.info("getPath2");
         return defaultTopology(topology).getPaths(src, dst, weigher);
     }
 
@@ -230,6 +241,7 @@ public class DistributedTopologyStore
                                        DeviceId src, DeviceId dst,
                                        LinkWeigher weigher,
                                        int maxPaths) {
+        log.info("getshopath1");
         return defaultTopology(topology).getKShortestPaths(src, dst, weigher, maxPaths);
     }
 
@@ -238,6 +250,7 @@ public class DistributedTopologyStore
                                           DeviceId src,
                                           DeviceId dst,
                                           LinkWeigher weigher) {
+        log.info("getshopath1");
         return defaultTopology(topology).getKShortestPaths(src, dst, weigher);
     }
 
@@ -299,7 +312,7 @@ public class DistributedTopologyStore
         DefaultTopology newTopology =
                 new DefaultTopology(providerId, graphDescription, this::isBroadcastPoint);
         updateBroadcastPoints(newTopology);
-
+        log.info("joo) in DistributedTopologyStore updateTopology start");
         // Promote the new topology to current and return a ready-to-send event.
         synchronized (this) {
             // Make sure that what we're given is indeed newer than what we

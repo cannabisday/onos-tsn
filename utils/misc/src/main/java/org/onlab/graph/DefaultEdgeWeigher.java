@@ -30,7 +30,7 @@ public class DefaultEdgeWeigher<V extends Vertex, E extends Edge<V>>
     /**
      * Common weight value for any link.
      */
-    protected static final double HOP_WEIGHT_VALUE = 1;
+    protected static final double HOP_WEIGHT_VALUE = 1000;
     /**
      * Weight value for null path (without links).
      */

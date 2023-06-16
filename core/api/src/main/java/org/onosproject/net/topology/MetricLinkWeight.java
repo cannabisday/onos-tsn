@@ -17,13 +17,16 @@
 package org.onosproject.net.topology;
 
 import org.onlab.graph.ScalarWeight;
-import org.onlab.graph.Weight;
+import org.onlab.graph.Weight; 
 import org.onosproject.net.AnnotationKeys;
+import org.slf4j.Logger; //joo)
+import static org.slf4j.LoggerFactory.getLogger; //joo)
 
 /**
  * Link weight for measuring link cost using the link metric annotation.
  */
 public class MetricLinkWeight implements LinkWeigher {
+    private final Logger log = getLogger(getClass()); //joo)
 
     @Override
     public Weight getInitialWeight() {
@@ -38,6 +41,8 @@ public class MetricLinkWeight implements LinkWeigher {
     @Override
     public Weight weight(TopologyEdge edge) {
         String v = edge.link().annotations().value(AnnotationKeys.METRIC);
+        log.info("edge link annotatoin vlaue of metric {}",v);
+
         try {
             return ScalarWeight.toWeight(v != null ? Double.parseDouble(v) : 1);
         } catch (NumberFormatException e) {

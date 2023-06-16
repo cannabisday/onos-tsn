@@ -825,7 +825,8 @@ def generated_maven_jars():
             name = "openflowj",
             jar_sha256 = "b5bd490435fd6910ac9d2e0f1b2d71c68d9ff7261bfd0e70c4a0f8ea970c2785",
             licenses = ["notice"],
-            jar_urls = ["https://repo1.maven.org/maven2/org/onosproject/openflowj/3.2.1.onos/openflowj-3.2.1.onos.jar"],        )
+            jar_urls = ["file://home/chang/Downloads/jar/openflowj-3.2.1.onos.jar"],        )
+            #jar_urls = ["https://repo1.maven.org/maven2/org/onosproject/openflowj/3.2.1.onos/openflowj-3.2.1.onos.jar"],        )
     if "org_osgi_util_function" not in native.existing_rules():
         java_import_external(
             name = "org_osgi_util_function",

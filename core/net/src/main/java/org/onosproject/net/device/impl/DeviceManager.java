@@ -21,6 +21,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.onlab.util.KryoNamespace;
 import org.onlab.util.Tools;
+import org.onlab.graph.DijkstraGraphSearch;
+import org.onosproject.net.topology.GraphDescription;
 import org.onosproject.cluster.ClusterService;
 import org.onosproject.cluster.NodeId;
 import org.onosproject.mastership.MastershipEvent;
@@ -73,7 +75,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
-
+import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.HashSet;
@@ -547,6 +549,8 @@ public class DeviceManager
             // not triggering probe when triggered by provider service event
             return true;
         }
+        
+       
 
         @Override
         public void deviceConnected(DeviceId deviceId,
@@ -575,7 +579,7 @@ public class DeviceManager
             DeviceEvent event = store.createOrUpdateDevice(provider().id(), deviceId,
                     deviceDescription);
             applyRole(deviceId, role);
-
+            
             if (portConfig != null) {
                 //updating the ports if configration exists
                 List<PortDescription> complete = store.getPortDescriptions(provider().id(), deviceId)
@@ -585,8 +589,51 @@ public class DeviceManager
                         .map(e -> applyAllPortOps(deviceId, e))
                         .collect(Collectors.toList());
                 store.updatePorts(provider().id(), deviceId, portDescriptions);
-            }
+                //log.warn("(Joo) TSN link state : {}", portDescriptions); //joo
+                //log.info("(Joo) TSN link state : {}", portDescriptions); //joo
+            } else {
+                List<PortDescription> portDescriptions = store.getPortDescriptions(provider().id(), deviceId)
+                        .collect(Collectors.toList()).stream()
+                        .map(e -> applyAllPortOps(deviceId, e))
+                        .collect(Collectors.toList());
+                store.updatePorts(provider().id(), deviceId, portDescriptions);
 
+                /*if (portDescriptions.get(4) == 0) {
+                    portDescriptions.set(4,474);
+                    }*/
+                //log.warn("Joo) TSN link state : *{}", deviceId);//joo
+                //log.warn("Joo) TSN port state : **{}", deviceDescription);
+            }
+            if (portConfig != null) {
+            } else {
+                
+                    //public static void main(string[] args) {
+                        int[][] array = {{1,2,2},{1,4,1},{4,3,3},{2,3,3}};
+                        int temp2 = 0;
+                        int temp4 = 0;
+                        for (int i = 0; i < 4; i++) {
+                            if (array[i][0] == 1) {
+                                if (array[i][1] == 2) {
+                                    temp2 = array[i][2];
+                                } else if (array[i][0] == 4) {
+                                    temp4 = array[i][2];
+                                }
+                            } else {
+                                if (array[i][1] == 2) {
+                                    temp2 += array[i][2];
+                                } else if (array[i][0] == 4) {
+                                    temp4 += array[i][2];
+                                }
+                            }
+                        }    
+                        if (temp2 >= temp4) {
+                            log.warn("joo) TSN path top : 1(src) -- 2 -- 3(dst)");
+                        } else {
+                            log.warn("joo) TSN path top : 1(src) -- 4 -- 3(dst)");
+                        }
+                   // }
+                
+            }
             if (deviceDescription.isDefaultAvailable()) {
                 log.info("Device {} connected", deviceId);
             } else {
@@ -629,7 +676,7 @@ public class DeviceManager
                 // only the MASTER should be marking off-line in normal cases,
                 // but if I was the last STANDBY connection, etc. and no one else
                 // was there to mark the device offline, this instance may need to
-                // temporarily request for Master Role and mark offline.
+                // temporarily request Master Role and mark offline.
 
                 //there are times when this node will correctly have mastership, BUT
                 //that isn't reflected in the ClockManager before the device disconnects.
@@ -674,7 +721,10 @@ public class DeviceManager
                 return;
             }
             PortDescriptionsConfig portConfig = networkConfigService.getConfig(deviceId, PortDescriptionsConfig.class);
-            if (portConfig != null) {
+
+
+
+   if (portConfig != null) {
                 // Updating the ports if configuration exists (on new lists as
                 // the passed one might be immutable)
                 portDescriptions = Lists.newArrayList(portDescriptions);
@@ -733,7 +783,8 @@ public class DeviceManager
         }
 
         @Override
-        public void deletePort(DeviceId deviceId, PortDescription basePortDescription) {
+
+    public void deletePort(DeviceId deviceId, PortDescription basePortDescription) {
 
             checkNotNull(deviceId, DEVICE_ID_NULL);
             checkNotNull(basePortDescription, PORT_DESCRIPTION_NULL);

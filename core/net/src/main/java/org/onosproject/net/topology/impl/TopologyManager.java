@@ -149,6 +149,8 @@ public class TopologyManager
         checkNotNull(topology, TOPOLOGY_NULL);
         checkNotNull(src, DEVICE_ID_NULL);
         checkNotNull(dst, DEVICE_ID_NULL);
+        log.warn("Joo) get path 1");  //joo
+
         return store.getPaths(topology, src, dst);
     }
 
@@ -161,6 +163,8 @@ public class TopologyManager
         checkNotNull(src, DEVICE_ID_NULL);
         checkNotNull(dst, DEVICE_ID_NULL);
         checkNotNull(weigher, LINK_WEIGHT_NULL);
+        log.warn("Joo) get path 2 {}", weigher);  //joo
+
         return store.getPaths(topology, src, dst, weigher);
     }
 
@@ -275,7 +279,9 @@ public class TopologyManager
             TopologyEvent event = store.updateTopology(provider().id(),
                                                        topoDescription, reasons);
             if (event != null) {
-                log.info("Topology {} changed", event.subject());
+                //log.info("joo) Topology {} changed", event.subject());
+                Topology jootopo = store.currentTopology();
+                //log.info("joo) topology jooooooooooooooooooooo {}",jootopo.computeCost());
                 post(event);
             }
         }
